@@ -1,0 +1,3 @@
+workon bschool (* virtualevnwrapper command that will start bschool virtual environment *)
+
+
