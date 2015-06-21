@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block content %}
+    <table>
+        <thead>
+            <tr>
+                <th>Post code</th>
+                <th>Average price</th>
+                <th>Sales no</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sale in house_sales %}
+            <tr>
+                <td>{{ sale.post_code_clean }}</td>
+                <td>{{ "{:,.0f}".format(sale.avg_price) }}</td>
+                <td>{{ sale.sales_no }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+{% endblock %}
