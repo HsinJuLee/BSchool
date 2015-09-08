@@ -1,8 +1,8 @@
 import os
-import psycopg2
+import MySQLdb
 import csv
 
-conn = psycopg2.connect(os.environ['DATABASE_URL'])
+conn = MySQLdb.connect(host=os.environ['DATABASE_URL'], port=int(os.environ['DATABASE_PORT']), db='test', user=os.environ['DATABASE_USER'], passwd=os.environ['DATABASE_PASSWORD'])
 cur = conn.cursor()
 
 reader = csv.reader(open('../../data/LondonYear_2013-2014.csv', 'rb'))
@@ -41,42 +41,41 @@ for row in reader:
         }
 
     cur.execute(statement, commandParameters)
-    # conn.commit()
+    conn.commit()
+
+    print '.',
 
 cur.close()
 conn.close()
 
 # Table creation script
-# CREATE TABLE house_sales
-# (
-#   id bigserial NOT NULL,
-#   price numeric,
-#   date date,
-#   post_code character varying(10),
-#   property_type character(1),
-#   whether_newbuild character(1),
-#   freehold character(1),
-#   address1 character varying(100),
-#   address2 character varying(100),
-#   address3 character varying(100),
-#   address4 character varying(100),
-#   town character varying(100),
-#   local_authority character varying(100),
-#   county character varying(100),
-#   record_status character(1),
-#   post_code_clean character varying(100),
-#   inner_outer character varying(10),
-#   borough_code character varying(100),
-#   ward_code14 character varying(100),
-#   ward_name14 character varying(100),
-#   ward_code13 character varying(100),
-#   ward_name13 character varying(100),
-#   msoall character varying(100),
-#   lsoall character varying(100),
-#   oall character varying(100),
-#   borough_name character varying(100),
-#   CONSTRAINT house_sales_pkey PRIMARY KEY (id)
-# )
-# WITH (
-#   OIDS=FALSE
-# );
+# CREATE TABLE `house_sales` (
+#   `id` int(11) NOT NULL AUTO_INCREMENT,
+#   `price` decimal DEFAULT NULL,
+#   `date` date DEFAULT NULL,
+#   `post_code` char(10),
+#   `property_type` char(1),
+#   `whether_newbuild` char(1),
+#   `freehold` char(1),
+#   `address1` varchar(100),
+#   `address2` varchar(100),
+#   `address3` varchar(100),
+#   `address4` varchar(100),
+#   `town` varchar(100),
+#   `local_authority` varchar(100),
+#   `county` varchar(100),
+#   `record_status` char(1),
+#   `post_code_clean` varchar(100),
+#   `inner_outer` varchar(10),
+#   `borough_code` varchar(100),
+#   `ward_code14` varchar(100),
+#   `ward_name14` varchar(100),
+#   `ward_code13` varchar(100),
+#   `ward_name13` varchar(100),
+#   `msoall` varchar(100),
+#   `lsoall` varchar(100),
+#   `oall` varchar(100),
+#   `borough_name` varchar(100),
+  
+#   PRIMARY KEY (`id`)
+# ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

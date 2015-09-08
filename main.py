@@ -1,8 +1,7 @@
 from flask import Flask
 from flask import render_template
 import os
-import psycopg2
-import psycopg2.extras
+import MySQLdb
 
 print(os.environ['APP_SETTINGS'])
 
@@ -15,8 +14,8 @@ def main():
 
 @app.route("/house-data")
 def house_data():
-    conn = psycopg2.connect(os.environ['DATABASE_URL'])
-    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    conn = MySQLdb.connect(host=os.environ['DATABASE_URL'], port=int(os.environ['DATABASE_PORT']), db='test', user=os.environ['DATABASE_USER'], passwd=os.environ['DATABASE_PASSWORD'])
+    cursor = conn.cursor(MySQLdb.cursors.DictCursor)
     # sample query
     cursor.execute("SELECT post_code_clean, AVG(price) as avg_price, COUNT(*) as sales_no FROM house_sales \
                     GROUP BY post_code_clean \
@@ -27,7 +26,7 @@ def house_data():
     house_sales = cursor.fetchall()
 
     cursor.close()
-    conn.close()
+    conn.close()    
 
     return render_template('house_data.html', house_sales = house_sales)
 
